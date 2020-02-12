@@ -1,0 +1,23 @@
+.jumbotron {
+    text-align: center;
+    color: red;
+    width: 95%;
+    margin: 0% auto;
+    
+    
+}
+    
+.row, .table {
+    width: 95%;
+    margin: 0% auto;
+
+}
+
+
+.addTrain, .currentTrain  {
+    background-color: blue;
+    color: white;
+    height: 30px;
+    
+
+}

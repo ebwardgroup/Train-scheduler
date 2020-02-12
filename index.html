@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Tracker</title>
+
+    <audio autoplay>
+        <source src="steam-train-whistle-daniel_simon.wav" type="audio-train">
+    </audio>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"
+            integrity = "sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin = "anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- < !--Firebase Ref-- >
+    < !--The core Firebase JS SDK is always required and must be listed first-- > -->
+                <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <!-- moment js ref -->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href=style.css>
+
+</head>
+
+<body>
+    <div class="jumbotron">
+        <h1>It's Train Time!</h1>
+        <h4>Tick-tock, choo-choo, all-aboard!
+        </h4>
+    </div>
+
+    <br>
+    <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
+
+            <div class="panel panel-default">
+
+                <h6 class=currentTrain>Current Train Schedule</h6>
+            </div>
+
+            <div>
+                <table class="table" id="trainTable">
+                    <thead>
+                        <tr>
+                            <th>Train Name</th>
+                            <th>Destination</th>
+                            <th>Frequency (min)</th>
+                            <th>Next Arrival</th>
+                            <th>Minutes Away</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trenton Express</td>
+                            <td>Trenton</td>
+                            <td>25</td>
+                            <td>17:35</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>Orient Express</td>
+                            <td>Shanghai</td>
+                            <td>6000</td>
+                            <td>07:00</td>
+                            <td>60</td>
+                        </tr>
+
+                        </form>
+
+                    </tbody>
+
+
+                </table>
+            </div>
+            <br>
+
+            <form>
+                <h6 class=addTrain>Add Train</h6>
+
+                <div class="form-group">
+                    <label for="name">Train Name: </label><br>
+                    <input type="text" class="form-control" id="name-display">
+                     <br>
+                    <label for="dest">Destination: </label><br>
+                    <input type="text" class="form-control" id="dest-display">
+                    <br>
+                    <label for="firstTime">First train time (HH:mm - military time) </label><br>
+                    <input type="text" class="form-control" id="firstTime-display">
+                    <br>
+                    <label for="freq">Frequency (min): </label><br>
+                    <input type="text" class="form-control" id="freq-display">
+                    <br>
+                    <button class="btn btn-primary btn-lg" id="trainInfoBtn" type="submit">Submit</button>
+
+                </div>
+            </form>
+        </div>
+
+
+        <script type="script.js"></script>
+</body>
+
+</html>
