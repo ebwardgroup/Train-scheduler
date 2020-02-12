@@ -1,90 +1,93 @@
-$( document ).ready(function() {
-
-
-// Your web app's Firebase configuration
-var firebaseConfig = {
+$(document).ready(function () {
+  // initialize firebase
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
     apiKey: "AIzaSyBBUWxeIp5OuljzRzFNab8d8fq5Zfogb84",
     authDomain: "hw7-train-tracker-a813d.firebaseapp.com",
     databaseURL: "https://hw7-train-tracker-a813d.firebaseio.com",
-    projectId: "hw7-train-tracker-a813d",
-    storageBucket: "hw7-train-tracker-a813d.appspot.com",
-    messagingSenderId: "124085603186",
-    appId: "1:124085603186:web:69f29bae2dab8be62febeb",
-    measurementId: "G-K1PYBVCMTK"
+    // projectId: "hw7-train-tracker-a813d",
+    // storageBucket: "hw7-train-tracker-a813d.appspot.com",
+    // messagingSenderId: "124085603186",
+    // appId: "1:124085603186:web:69f29bae2dab8be62febeb",
+    // measurementId: "G-K1PYBVCMTK"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
 
-  var dataRef = firebase.database();
+  var database = firebase.database();
 
-//on submit save values the user entered//
-var name = "";
-var dest = "";
-var firstTime = 0;
-var freq = "";
-    //upload values to firebase//
-
-// Capture Button Click
-$("#trainInfoBtn").on("click", function(event) {
+  $("#addTrainInfoBtn").on("click", function (event) {
     event.preventDefault();
 
-    // YOUR TASK!!!
-    // Code in the logic for storing and retrieving the most recent user.
-    // Don't forget to provide initial data to your Firebase database.
-    name = $("#name-input").val().trim();
+    var trainName = $("#name").val().trim();
+    console.log(name);
 
-    dest = $("#dest-input").val().trim();
+    var destination = $("#dest").val().trim();
+    console.log(dest);
 
-    firstTime = moment($("#firstTime-input").val().trim(),"hh:mm").
-    subtract(1, "hours").format("X");
+    var firstTime = moment($("#firstTime").val().trim(), "hh:mm").subtract(1, "years").format("X");
 
-    freq = $("#freq-input").val().trim();
+    var frequency = $("#freq").val().trim();
 
-    	//current time 
-	var currentTime = moment();
-    console.log("CURRENT TIME: " +  moment(currentTime).format("hh:mm"));
-    
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
-    // Code for the push
-    dataRef.ref().push({
-
-      name: name,  // json name of key then : data from 128-131 above//
-      dest: dest,
+    var newTrain = {
+      trainName: trainName,
+      destination: destination,
       firstTime: firstTime,
-      freq: freq,
-      dateAdded: firebase.database.ServerValue.TIMESTAMP
-    });
-  });    
-
-  // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
-  dataRef.ref().on("child_added", function(childSnapshot) {
-
-    // Log everything that's coming out of snapshot
-    console.log(childSnapshot.val().name);
-    console.log(childSnapshot.val().dest);
-    console.log(childSnapshot.val().firstTime);
-    console.log(childSnapshot.val().freq);
+      frequency: frequency
+    };
+    database.ref().push(newTrain);
+console.log(newTrain.trainName);
 
 
-    // full list of items...chg div to table like tr//
-    $("#addTrain").append("<div class='form-control'><span class='name'> " +
-      childSnapshot.val().name +
-      " </span><span class='dest'> " + childSnapshot.val().dest +
-      " </span><span class='firstTime'> " + childSnapshot.val().firstTime +
-      " </span><span class='freq'> " + childSnapshot.val().freq +
-      " </span></div>");
+    alert("New train successfully added");
 
-    // Handle the errors
-  }, function(errorObject) {
-    console.log("Errors handled: " + errorObject.code);
+    $("#name").val("");
+    $("#dest").val("");
+    $("#firstTime").val("");
+    $("#freq").val("");
+  });
+
+  database.ref().on("child_added", function(childSnapshot) {
+
+    console.log(childSnapshot.val());
+    //store in variables
+    var trainName = childSnapshot.val().trainName;
+    var destination = childSnapshot.val().destination;
+    var firstTime = childSnapshot.val().firstTime;
+    var frequency = childSnapshot.val().frequency;
+
+    var trainTime = moment.unix(firstTime).format("hh:mm");
+
+    var difference = moment().diff(moment(trainTime), "minutes");
+
+    var trainRemain = difference % frequency;
+
+    //minutes until arrival
+    var minAway = frequency - trainRemain;
+
+    //next arrival time
+    var nextArrival = moment().add(minUntil, "minutes").format('hh:mm');
+
+    // Create the new row
+    var newRow = $("<tr>").append(
+      $("<td>").text(trainName,
+      $("<td>").text(destination),
+      $("<td>").text(frequency),
+      $("<td>").text(nextArrival),
+      $("<td>").text(minAway)
+    ));
+
+    // Append the new row to the table
+    $("#trainTable > tbody").append(newRow);
+  });
+
+
+  // //adding info to DOM table 
+  // $("#trainTable > tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + nextArrival + "</td><td>" + minUntil + "</td></tr>");
+
 });
-
-dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
-  // Change the HTML to reflect
-  $("#name-display").text(snapshot.val().name);
-  $("#dest-display").text(snapshot.val().dest);
-  $("#firstTime-display").text(snapshot.val().firstTime);
-  $("#freq-display").text(snapshot.val().freq);
-});
-}
 
